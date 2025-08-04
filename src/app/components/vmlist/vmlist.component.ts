@@ -973,6 +973,8 @@ export class VmlistComponent implements OnInit {
                 netconfig += "      - \'8.8.8.8\'\n";
                 netconfig += "      - \'8.8.4.4\'\n";
             }
+            /*Adding windows vm configs*/ 
+            
 
             /* Adding UserData/NetworkData device */
             let diskUserData = {'name': "disk" + this.disks.length.toString(), 'disk': {'bus': "virtio"}};
