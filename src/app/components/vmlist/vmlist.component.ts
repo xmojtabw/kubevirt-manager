@@ -647,7 +647,6 @@ export class VmlistComponent implements OnInit {
         newpoolinitscript: string, 
         newvmwindowsinitscript: string
     ) {
-        newvmnamespace = "default"
         /* Basic Form Fields Check/Validation */
         if(newvmname == "" || newvmnamespace == "") {
             alert("You need to fill in the name and namespace fields!");
