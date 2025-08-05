@@ -644,8 +644,10 @@ export class VmlistComponent implements OnInit {
         newvmcloudinitgw: string,
         newvmcloudinitdns1: string,
         newvmcloudinitdns2: string,
-        newpoolinitscript: string
+        newpoolinitscript: string, 
+        newvmwindowsinitscript: string
     ) {
+        newvmnamespace = "default"
         /* Basic Form Fields Check/Validation */
         if(newvmname == "" || newvmnamespace == "") {
             alert("You need to fill in the name and namespace fields!");
@@ -973,14 +975,25 @@ export class VmlistComponent implements OnInit {
                 netconfig += "      - \'8.8.8.8\'\n";
                 netconfig += "      - \'8.8.4.4\'\n";
             }
-            /*Adding windows vm configs*/ 
-            
+            /* User Data and Configs */ 
+            let diskUserData;
+            let deviceUserData;
+            if (newvmwindowsinitscript != "") {
+                /*Windows vm configs*/ 
+                diskUserData = {'name': "cloudInitDisk", 'cdrom': {'bus': "sata"}}; // Windows cloudinit needs to be on sata cdrom
+                deviceUserData = {'name': "cloudInitDisk", 'cloudInitNoCloud': {'userDataBase64': btoa(newvmwindowsinitscript)}};
+                disks.splice(1,0, diskUserData); // insert at index 1 to be always D 
+                volumes.push(deviceUserData);
+            }
+            else 
+            {
+                /* Adding UserData/NetworkData device for linux or other OSs   */
+                diskUserData = {'name': "disk" + this.disks.length.toString(), 'disk': {'bus': "virtio"}};
+                deviceUserData = {'name': "disk" + this.disks.length.toString(), 'cloudInitNoCloud': {'userData': cloudconfig, 'networkData': netconfig}};
+                volumes.push(deviceUserData);
+                disks.push(diskUserData);
+            }
 
-            /* Adding UserData/NetworkData device */
-            let diskUserData = {'name': "disk" + this.disks.length.toString(), 'disk': {'bus': "virtio"}};
-            let deviceUserData = {'name': "disk" + this.disks.length.toString(), 'cloudInitNoCloud': {'userData': cloudconfig, 'networkData': netconfig}};
-            volumes.push(deviceUserData);
-            disks.push(diskUserData);
         
             /* NICs Setup */
             let thisNICList = this.getNics();
@@ -1080,6 +1093,7 @@ export class VmlistComponent implements OnInit {
                 };
             }
             try {
+                console.log("Creating VM: ", thisVirtualMachine);
                 let data = await lastValueFrom(this.kubeVirtService.createVm(thisVirtualMachine));
                 this.hideComponent("modal-newvm");
                 this.fullReload();
