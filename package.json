@@ -29,14 +29,13 @@
     "datatables.net-dt": "^2.0.3",
     "jquery": "^3.6.0",
     "karma-spec-reporter": "^0.0.36",
-    "npm": "^10.8.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.7"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.1.1",
-    "@angular/cli": "^18.1.1",
+    "@angular/cli": "~18.1.1",
     "@angular/compiler-cli": "^18.1.1",
     "@types/ansi-html": "^0.0.0",
     "@types/jasmine": "~4.0.0",

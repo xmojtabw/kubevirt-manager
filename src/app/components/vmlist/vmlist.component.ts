@@ -647,7 +647,6 @@ export class VmlistComponent implements OnInit {
         newpoolinitscript: string, 
         newvmwindowsinitscript: string
     ) {
-        newvmnamespace = "default"
         /* Basic Form Fields Check/Validation */
         if(newvmname == "" || newvmnamespace == "") {
             alert("You need to fill in the name and namespace fields!");
@@ -980,8 +979,8 @@ export class VmlistComponent implements OnInit {
             let deviceUserData;
             if (newvmwindowsinitscript != "") {
                 /*Windows vm configs*/ 
-                diskUserData = {'name': "cloudInitDisk", 'cdrom': {'bus': "sata"}}; // Windows cloudinit needs to be on sata cdrom
-                deviceUserData = {'name': "cloudInitDisk", 'cloudInitNoCloud': {'userDataBase64': btoa(newvmwindowsinitscript)}};
+                diskUserData = {'name': "cloudinitdisk", 'cdrom': {'bus': "sata"}}; // Windows cloudinit needs to be on sata cdrom
+                deviceUserData = {'name': "cloudinitdisk", 'cloudInitNoCloud': {'userDataBase64': btoa(newvmwindowsinitscript)}};
                 disks.splice(1,0, diskUserData); // insert at index 1 to be always D 
                 volumes.push(deviceUserData);
             }
