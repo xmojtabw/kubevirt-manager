@@ -44,6 +44,9 @@ export interface VirtualMachine {
                         threads: number;
                         cores: number;
                     };
+                    memory?: {
+                        guest: string;
+                    };
                     resources?: {
                         requests: {
                             memory: string;

@@ -1,0 +1,125 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  annotations:
+    kubemacpool.io/transaction-timestamp: "2025-09-02T05:35:41.623117481Z"
+    kubevirt.io/allow-pod-bridge-network-live-migration: v1
+    kubevirt.io/latest-observed-api-version: v1
+    kubevirt.io/storage-observed-api-version: v1
+  creationTimestamp: "2025-08-11T07:09:03Z"
+  finalizers:
+  - kubevirt.io/virtualMachineControllerFinalize
+  generation: 19
+  labels:
+    fw.kubevirt-manager.io/vm-name: tvmx
+    k8s.v1.cni.cncf.io/networks: br1-l2
+    kubevirt-manager.io/managed: "true"
+    kubevirt.io/domain: tvmx
+  name: tvmx
+  namespace: vms
+  resourceVersion: "245101720"
+  uid: e467bcf2-d279-4d3e-8337-e5574697f3b4
+spec:
+  runStrategy: Manual
+  template:
+    metadata:
+      annotations:
+        kubevirt.io/allow-pod-bridge-network-live-migration: v1
+      creationTimestamp: null
+      labels:
+        fw.kubevirt-manager.io/vm-name: tvmx
+        k8s.v1.cni.cncf.io/networks: br1-l2
+        kubevirt-manager.io/managed: "true"
+        kubevirt.io/domain: tvmx
+    spec:
+      architecture: amd64
+      domain:
+        cpu:
+          cores: 4
+          sockets: 1
+          threads: 1
+        devices:
+          disks:
+          - bootOrder: 1
+            disk:
+              bus: virtio
+            name: disk0
+          - cdrom:
+              bus: sata
+            name: cloudinitdisk
+          interfaces:
+          - bridge: {}
+            model: virtio
+            name: net0
+          - bridge: {}
+            macAddress: 02:5d:81:d7:7a:5b
+            model: virtio
+            name: net1
+          networkInterfaceMultiqueue: true
+        features:
+          acpi: {}
+          smm:
+            enabled: true
+        firmware:
+          bootloader:
+            efi:
+              secureBoot: false
+        machine:
+          type: q35
+        memory:
+          guest: 4Gi
+        resources:
+          limits:
+            cpu: "16"
+          requests:
+            cpu: "2"
+            memory: 4Gi
+      evictionStrategy: LiveMigrate
+      networks:
+      - name: net0
+        pod: {}
+      - multus:
+          networkName: vms/br1-l2
+        name: net1
+      volumes:
+      - dataVolume:
+          name: vms-tvmx-disk0
+        name: disk0
+      - cloudInitNoCloud:
+          userDataBase64: I3BzMV9zeXNuYXRpdmUKbmV0IHVzZXIgSFBDVXNlciBIUENQYXNzMTIzCm5ldCB1c2VyIEFkbWluIEFkbWlu
+        name: cloudinitdisk
+status:
+  conditions:
+  - lastProbeTime: "2025-09-03T06:02:51Z"
+    lastTransitionTime: "2025-09-03T06:02:51Z"
+    message: virt-launcher pod is terminating
+    reason: PodTerminating
+    status: "False"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: null
+    message: All of the VMI's DVs are bound and ready
+    reason: AllDVsReady
+    status: "True"
+    type: DataVolumesReady
+  - lastProbeTime: null
+    lastTransitionTime: null
+    status: "True"
+    type: LiveMigratable
+  - lastProbeTime: null
+    lastTransitionTime: null
+    status: "True"
+    type: StorageLiveMigratable
+  created: true
+  desiredGeneration: 19
+  observedGeneration: 19
+  printableStatus: Stopped
+  runStrategy: Manual
+  volumeSnapshotStatuses:
+  - enabled: false
+    name: disk0
+    reason: 'No VolumeSnapshotClass: Volume snapshots are not configured for this
+      StorageClass [rook-cephfs] [disk0]'
+  - enabled: false
+    name: cloudinitdisk
+    reason: Snapshot is not supported for this volumeSource type [cloudinitdisk]

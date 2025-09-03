@@ -143,7 +143,24 @@ export class KubeVirtService {
             'content-type': 'application/merge-patch+json',
             'accept': 'application/json'
         };
-        return this.http.patch(`${baseUrl}/namespaces/${namespace}/virtualmachines/${name}`, '{"spec":{"template":{"spec":{"domain":{"cpu":{"sockets": '+sockets+',"cores": '+cores+',"threads": '+threads+'},"resources":{"requests":{"memory": "'+memory+'Gi"}}}}}}}', { 'headers': headers } );
+        // return this.http.patch(`${baseUrl}/namespaces/${namespace}/virtualmachines/${name}`, '{"spec":{"template":{"spec":{"domain":{"cpu":{"sockets": '+sockets+',"cores": '+cores+',"threads": '+threads+'},"resources":{"requests":{"memory": "'+memory+'Gi"}}}}}}}', { 'headers': headers } );
+        var updated_spec = {
+            spec : {
+                template: {
+                    spec: {
+                        domain: {
+                            cpu: {
+                                sockets: sockets,
+                                cores: cores,
+                                threads: threads
+                            },
+                            memory: { guest: `${memory}Gi` }
+                        }
+                    }
+                }
+            }
+        }
+        return this.http.patch(`${baseUrl}/namespaces/${namespace}/virtualmachines/${name}`, updated_spec, { 'headers': headers } );
     }
 
     changeVmStrategy(namespace: string, name: string, strategy: string): Observable<any> {

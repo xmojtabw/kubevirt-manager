@@ -1084,6 +1084,13 @@ export class VmlistComponent implements OnInit {
                         memory: newvmcpumemmemory + "Gi"
                     }
                 };
+
+                if (!thisVirtualMachine.spec.template.spec.domain.memory) {
+                    thisVirtualMachine.spec.template.spec.domain.memory = { guest: "" };
+                }
+                thisVirtualMachine.spec.template.spec.domain.memory.guest = newvmcpumemmemory + "Gi";
+
+
             } else {
                 thisVirtualMachine.spec.template.spec.priorityClassName = newvmpriorityclass;
                 thisVirtualMachine.spec.instancetype = {  

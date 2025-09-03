@@ -193,18 +193,21 @@
                   <li class="nav-item">
                     <a class="nav-link" id="newvm-net-tab" data-toggle="pill" href="#newvm-net" role="tab" aria-controls="newvm-net" aria-selected="false">Networking</a>
                   </li>
-                  <li class="nav-item">
+                  <!-- <li class="nav-item">
                     <a class="nav-link" id="newvm-userdata-tab" data-toggle="pill" href="#newvm-userdata" role="tab" aria-controls="newvm-userdata" aria-selected="false">User Data</a>
-                  </li>
+                  </li> -->
                   <li class="nav-item">
                     <!-- This is hidden by default, and only shown if Network != podNetwork -->
                     <a class="nav-link" id="newvm-netdata-tab" data-toggle="pill" href="#newvm-netdata" role="tab" aria-controls="newvm-netdata" aria-selected="false" style="display: none;">Network Data</a>
                   </li>
-                  <li class="nav-item">
+                  <!-- <li class="nav-item">
                     <a class="nav-link" id="newpool-initscript-tab" data-toggle="pill" href="#newpool-initscript" role="tab" aria-controls="newpool-initscript" aria-selected="false">Init Script</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" id="newvm-windows-initscript-tab" data-toggle="pill" href="#newvm-windows-initscript" role="tab" aria-controls="newvm-windows-initscript" aria-selected="false"> Init Windows Script</a>                  
+                  </li> -->
+                  <li class="nav-item">
+                    <a class="nav-link" id="newvm-initscript-tab" data-toggle="pill" href="#newvm-initscript" role="tab" aria-controls="newvm-initscript" aria-selected="false">Init Script</a>                  
                   </li>
                 </ul>
               </div>
@@ -486,7 +489,7 @@
                     </div>
                   </div>
                   <!-- USERDATA TAB -->
-                  <div class="tab-pane fade" id="newvm-userdata" role="tabpanel" aria-labelledby="newvm-userdata-tab">
+                  <!-- <div class="tab-pane fade" id="newvm-userdata" role="tabpanel" aria-labelledby="newvm-userdata-tab">
                     <label for="newvm-userdata-username">Username:</label>
                     <input #newvmuserdatausername type="text" class="form-control" id="newvm-userdata-username" name="newvm-userdata-username">
                     <label for="newvm-userdata-auth">Authentication:</label>
@@ -504,7 +507,8 @@
                             <option>Loading...</option>
                         </select>
                     </div>
-                  </div>
+                  </div> -->
+                  
                   <!-- NETWORK DATA TAB -->
                   <div class="tab-pane fade" id="newvm-netdata" role="tabpanel" aria-labelledby="newvm-netdata-tab">
                     <label for="newvm-netdata-ip">nic0 IP:</label>
@@ -519,13 +523,70 @@
                     <input #newvmnetdatadns2 type="text" class="form-control" id="newvm-netdata-dns2" name="newvm-netdata-dns2">
                   </div>
                   <!-- INIT SCRIPT -->
-                  <div class="tab-pane fade" id="newpool-initscript" role="tabpanel" aria-labelledby="newpool-initscript-tab">
+                  <!-- <div class="tab-pane fade" id="newpool-initscript" role="tabpanel" aria-labelledby="newpool-initscript-tab">
                     <textarea #newpoolinitscript class="form-control" rows="14" cols="10" name="newpool-initscript" id="newpool-initscript" placeholder=""></textarea>
-                  </div>
+                  </div> -->
                   <!-- windows INIT SCRIPT -->
-                  <div class="tab-pane fade" id="newvm-windows-initscript" role="tabpanel" aria-labelledby="newvm-windows-initscript-tab">
+                  <!-- <div class="tab-pane fade" id="newvm-windows-initscript" role="tabpanel" aria-labelledby="newvm-windows-initscript-tab">
                     <textarea #newvmwindowsinitscript class="form-control" rows="14" cols="10" name="newvm-windows-initscript"
                       id="newvm-windows-initscript" placeholder=""></textarea>
+                  </div> -->
+                  <!-- INIT SCRIPT both -->  
+                  <div class="tab-pane fade" id="newvm-initscript" role="tabpanel" aria-labelledby="newvm-initscript-tab">
+
+                    <!-- OS selection bar -->
+                    <ul class="nav nav-tabs" id="os-selection-tab" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="windows-tab" data-toggle="tab" href="#windows" role="tab" aria-controls="windows" aria-selected="false">Windows</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="linux-tab" data-toggle="tab" href="#linux" role="tab" aria-controls="linux" aria-selected="true">Linux</a>
+                      </li>
+                    </ul>
+                    
+                    <!-- OS Tabs -->
+                    <div class="tab-content" id="osTabContent">
+                      <!-- Windows -->
+                      <div class="tab-pane fade show active" id="windows" role="tabpanel" aria-labelledby="windows-tab">
+                        <h5>Windows Init Script</h5>
+                        <textarea #newvmwindowsinitscript class="form-control" rows="14" cols="10" name="newvm-windows-initscript"
+                          id="newvm-windows-initscript" placeholder=""></textarea>
+                      </div>
+                      <!-- Linux -->
+                      <div class="tab-pane fade" id="linux" role="tabpanel" aria-labelledby="linux-tab">
+                        <!-- <h5>Linux Init Script</h5> -->
+                        <fieldset>
+                          <legend>User Data</legend>
+                          <label for="newvm-userdata-username">Username:</label>
+                          <input #newvmuserdatausername type="text" class="form-control" id="newvm-userdata-username" name="newvm-userdata-username">
+                          <label for="newvm-userdata-auth">Authentication:</label>
+                          <select #newvmuserdataauth class="custom-select rounded-0" name="newvm-userdata-auth" id="newvm-userdata-auth" (change)="onChangeAuthType(newvmuserdataauth.value, newvmnamespace.value)">
+                            <option value="password">User/Password</option>
+                            <option value="ssh">SSH Private Key</option>
+                          </select>
+                          <div class="pane fade show" id="newvm-userdata-password-panel" name="newvm-userdata-password-panel" style="display: contents;" aria-hidden="false">
+                              <label for="newvm-userdata-password">Password:</label>
+                              <input #newvmuserdatapassword type="password" class="form-control" id="newvm-userdata-password" name="newvm-userdata-password">
+                          </div>
+                          <div class="pane fade" id="newvm-userdata-ssh-panel" name="newvm-userdata-ssh-panel" style="display: none;" aria-hidden="true">
+                              <label for="newvm-userdata-ssh">SSH Key:</label>
+                              <select #newvmuserdatassh class="custom-select rounded-0" name="newvm-userdata-ssh" id="newvm-userdata-ssh">
+                                  <option>Loading...</option>
+                              </select>
+                          </div>
+                        </fieldset>
+
+                        <hr>
+
+                        <fieldset>
+                          <legend>Init Script</legend>
+
+                          <textarea #newpoolinitscript class="form-control" rows="9" cols="10" name="newpool-initscript" id="newpool-initscript" placeholder=""></textarea>
+                        </fieldset>
+                      </div>
+                    </div>
+
+
                   </div>
                 </div>
               </div>
