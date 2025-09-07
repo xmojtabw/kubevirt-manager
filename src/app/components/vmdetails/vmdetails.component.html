@@ -419,21 +419,22 @@
                   <!-- <option value=cdrom>CDROM</option> not supported yet -->
                   <option value=lun>LUN</option>
               </select>
-              <label for="hotplugCache">Type:</label>
+              <label for="hotplugCache">Cache Type:</label>
               <select #hotplugcache class="custom-select rounded-0" name="hotplug-cache" id="hotplug-cache">
                   <option selected value=none>CacheNone</option>
                   <option value=writethrough>CacheWriteThrough</option>
                   <option value=writeback>CacheWriteBack</option>
               </select>
-              <!--bus-->
-              <label for="hotplugbus">Bus:</label>
+              <!-- Bus -->
+              <!-- <label for="hotplugbus">Bus:</label>
+              * bus only scsi is supported * 
               <select #hotplugbus class="custom-select rounded-0" name="hotplug-bus" id="hotplug-bus">
                   <option selected value="virtio"> VirtIO</option>
                   <option value="sata">sata</option>
                   <option value="scsi">scsi</option>
-              </select>
+              </select> -->
 
-              <!--bus-->
+              <!--bus -->
               <label for="hotplugReadOnly">Read Only:</label>
               <select #hotplugreadonly class="custom-select rounded-0" name="hotplug-readonly" id="hotplug-readonly">
                 <option selected value="no">No</option>
@@ -442,7 +443,7 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" (click)='hideComponent("modal-hotplug")'>Close</button>
-              <button type="button" class="btn btn-primary" (click)="applyHotplug(hotplugvolume.value, hotplugtype.value, hotplugcache.value, hotplugreadonly.value , hotplugbus.value)">Plug</button>
+              <button type="button" class="btn btn-primary" (click)="applyHotplug(hotplugvolume.value, hotplugtype.value, hotplugcache.value, hotplugreadonly.value)">Plug</button>
             </div>
           </div>
           <!-- /.modal-content -->

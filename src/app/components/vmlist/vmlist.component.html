@@ -355,6 +355,17 @@
                                         </div>
                                     </div>
                                     <div class="card-body" style="display: block;">
+                                        <!-- <div class ="row" >
+                                         Disk Type dropdown added here 
+                                          <div class="form-group d-inline-block ml-3" style="min-width: 120px;">
+                                            <label for="diskTypeSelect-{{i}}" style="margin-bottom: 0; font-weight: normal;">Disk Type:</label>
+                                            <select #disktypeselect class="custom-select rounded-0" name="diskTypeSelect-{{i}}" id="diskTypeSelect-{{i}}" formControlName="diskTypeSelect">
+                                              <option value="LUN">LUN</option>
+                                              <option value="CDROM">CDROM</option>
+                                              <option value="DISK">DISK</option>
+                                            </select>
+                                          </div>
+                                        </div> -->
                                         <div class="row">
                                             <div class="col-3" name="newvm-disk-type-col">
                                                 <label for="newvm-disktype-{{i}}">Type:</label>
@@ -365,10 +376,18 @@
                                                     <option value="dv">DataVolume</option>
                                                 </select>
                                             </div>
-                                            <div class="col-5">
+                                            <div class="col-3">
                                                 <label for="newvm-diskvalue-{{i}}">Value:</label>
                                                 <select #newvmdiskvalue class="custom-select rounded-0" name="newvm-diskvalue-{{i}}" id="diskValue-{{i}}" formControlName="diskValue">
                                                 </select>
+                                            </div>
+                                            <div class="col-2" name="newvm-disk-kind-col">
+                                              <label for="newvm-diskkind-{{i}}">Disk Kind:</label>
+                                              <select #diskkind class="custom-select rounded-0" name="newvm-diskkind-{{i}}" id="diskKind-{{i}}" formControlName="diskKind">
+                                                <option value="disk" selected >Disk</option>
+                                                <option value="lun">LUN</option>
+                                                <option value="cdrom">CD-ROM</option>
+                                              </select>
                                             </div>
                                             <div class="col-2">
                                                 <label for="newvm-disksize-{{i}}">Size/GB:</label>
@@ -407,10 +426,9 @@
                                           <div class="col-2">
                                             <label for="newvm-diskcm-{{i}}">Bus:</label>
                                             <select #newvmdiskbus class="custom-select rounded-0" name="newvm-diskbus-{{i}}" id="diskBus-{{i}}" formControlName="diskBus">
-                                                <option value="" selected></option>
-                                                <option value="virtio">virtio</option>
-                                                <option value="sata">sata</option>
-                                                <option value="scsi">scsi</option>
+                                             <option *ngFor="let bus of getBusOptions(diskkind.value)" [value]="bus.value">{{bus.label}}</option>
+
+
                                             </select>
                                           </div>
                                           <div class="col-2">

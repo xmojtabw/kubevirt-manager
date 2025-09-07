@@ -209,6 +209,7 @@ export class VmlistComponent implements OnInit {
         return this.fb.group({
             diskType: [''],
             diskValue: [''],
+            diskKind: ['disk'],
             diskSize: [''],
             diskBootOrder: this.disks.length + 1,
             diskStorageClass: [''],
@@ -1642,5 +1643,24 @@ export class VmlistComponent implements OnInit {
         this.router.navigateByUrl('/refresh',{skipLocationChange:true}).then(()=>{
             this.router.navigate([`/vmlist`]);
         })
+    }
+
+    getBusOptions(diskKind: string): { value: string, label: string }[] {
+      if (diskKind === 'disk') {
+        return [
+          { value: '', label: '' },
+          { value: 'virtio', label: 'virtio' },
+          { value: 'sata', label: 'sata' },
+          { value: 'scsi', label: 'scsi' },
+          { value: 'usb', label: 'usb' }
+        ];
+      } else {
+        return [
+          { value: '', label: '' },
+          { value: 'virtio', label: 'virtio' },
+          { value: 'sata', label: 'sata' },
+          { value: 'scsi', label: 'scsi' }
+        ];
+      }
     }
 }
