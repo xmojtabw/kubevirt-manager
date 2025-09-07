@@ -1182,7 +1182,7 @@ export class VmdetailsComponent implements OnInit {
     /*
      * Apply Hotplug
      */
-    async applyHotplug(volume: string, type: string, cachemode: string, readonly: string): Promise<void> {
+    async applyHotplug(volume: string, type: string, cachemode: string, readonly: string, bus: string): Promise<void> {
         let spec: any;
 
         if (readonly == "yes") {
