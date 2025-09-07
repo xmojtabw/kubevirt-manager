@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: kubevirtmgr
-          image: xmojtabw/kubevirt-manager:1.5.2
+          image: 192.168.170.190:5000/kubevirt-manager-win:1.5.2
           imagePullPolicy: IfNotPresent
           ports:
           - name: http

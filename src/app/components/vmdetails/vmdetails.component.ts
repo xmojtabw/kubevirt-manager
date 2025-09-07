@@ -873,53 +873,100 @@ export class VmdetailsComponent implements OnInit {
     async loadDiskInfo(disks: any, volumes: any): Promise<void> {
 
         /* Find Disk */
+        console.log(disks);
+        console.log(volumes);
         for (let i = 0; i < disks.length; i++) {
 
             let diskInfo: VMDisk = new VMDisk;
             diskInfo.id = i;
             diskInfo.name = disks[i].name;
-            
-            diskInfo.cacheMode = disks[i].cache;
-            if(disks[i].disk.bus != "") {
-                diskInfo.bus = disks[i].disk.bus;
-            }
-            if(diskInfo.cacheMode == null) {
-                diskInfo.cacheMode = "N/A";
-            }
-            if(disks[i].bootOrder != 9999) {
-                diskInfo.bootOrder = disks[i].bootOrder
-            }
+            // My codes here
+            console.log("code version 1.2 is runnning");
+            const diskTypes = ['cdrom', 'disk', 'lun'];
 
-            let keys = Object.keys(disks[i]);
-            for (let j = 0; j < keys.length; j++) {
-                if(keys[j].toLowerCase() != "name") {
-                    diskInfo.type = keys[j];
-                }
-            }
-            /* Find Volume related to the Disk */
-            for (let k = 0; k < volumes.length; k++) {
-                if(volumes[k].name == diskInfo.name) {
-                    let volume_keys = Object.keys(volumes[k]);
-                    for(let l = 0; l < volume_keys.length; l++) {
-                        if(volume_keys[l].toLowerCase() != "name") {
-                            if(volume_keys[l].toLowerCase() == "datavolume") {
-                                diskInfo.backend = volume_keys[l];
-                                diskInfo.dataVolume.name = volumes[k].dataVolume.name;
-                                diskInfo.dataVolume.namespace = this.activeVm.namespace;
-                                if(volumes[k].dataVolume.hotpluggable == true) {
-                                    diskInfo.hotplug = true;
-                                }
-                            } else if (volume_keys[l].toLowerCase().includes("cloudinit")) {
-                                diskInfo.backend = volume_keys[l];
-                                diskInfo.dataVolume.name = "N/A";
-                                diskInfo.dataVolume.namespace = "N/A";
-                            }
-                        }
+            for (const diskType of diskTypes) {
+                if (diskType in disks[i]) {
+                    diskInfo.type = diskType;
+                    // Handle each disk type separately
+                    switch (diskType) {
+                        case 'cdrom':
+                            diskInfo.bus = disks[i].cdrom.bus || 'N/A'; // Example: Handle CD-ROM specific properties
+                            break;
+                        case 'disk':
+                            diskInfo.bus = disks[i].disk.bus || 'N/A'; // Example: Handle Disk specific properties
+                            break;
+                        case 'lun':
+                            diskInfo.bus = disks[i].lun.bus || 'N/A'; // Example: Handle LUN specific properties
+                            break;
                     }
+                    break; // Exit loop once the type is found
+                }
+            }
+            diskInfo.cacheMode = disks[i].cache || "N/A";
+            //
+            
+            // if(disks[i].disk.bus != "") {
+            //     diskInfo.bus = disks[i].disk.bus;
+            // }
+            // if(diskInfo.cacheMode == null) {
+            //     diskInfo.cacheMode = "N/A";
+            // }
+            console.log(disks[i]);
+            console.log(disks[i].bootOrder);
+            // if(disks[i].bootOrder != 9999) {
+            //     diskInfo.bootOrder = disks[i].bootOrder
+            // }
+            diskInfo.bootOrder = disks[i].bootOrder || NaN;
+
+            // let keys = Object.keys(disks[i]);
+            // for (let j = 0; j < keys.length; j++) {
+            //     if(keys[j].toLowerCase() != "name") {
+            //         diskInfo.type = keys[j];
+            //     }
+            // }
+            /* Find Volume related to the Disk */
+
+            for (const volume of volumes) {
+                if (volume.name === diskInfo.name) {
+                    diskInfo.backend = Object.keys(volume).find(key => key.toLowerCase() !== 'name') || 'N/A';
+                    if (diskInfo.backend.toLowerCase() === 'datavolume') {
+                        diskInfo.dataVolume.name = volume.dataVolume.name;
+                        diskInfo.dataVolume.namespace = this.activeVm.namespace;
+                        if (volume.dataVolume.hotpluggable === true) {
+                            diskInfo.hotplug = true;
+                        }
+                    } else if (diskInfo.backend.toLowerCase().includes('cloudinit')) {
+                        diskInfo.dataVolume.name = 'N/A';
+                        diskInfo.dataVolume.namespace = 'N/A';
+                    }
+                    break; // Exit loop once the matching volume is found
                 }
             }
 
-            this.addDisk(disks[i].name, disks[i].bootOrder, disks[i].disk.bus);
+
+            // for (let k = 0; k < volumes.length; k++) {
+            //     if(volumes[k].name == diskInfo.name) {
+            //         let volume_keys = Object.keys(volumes[k]);
+            //         for(let l = 0; l < volume_keys.length; l++) {
+            //             if(volume_keys[l].toLowerCase() != "name") {
+            //                 if(volume_keys[l].toLowerCase() == "datavolume") {
+            //                     diskInfo.backend = volume_keys[l];
+            //                     diskInfo.dataVolume.name = volumes[k].dataVolume.name;
+            //                     diskInfo.dataVolume.namespace = this.activeVm.namespace;
+            //                     if(volumes[k].dataVolume.hotpluggable == true) {
+            //                         diskInfo.hotplug = true;
+            //                     }
+            //                 } else if (volume_keys[l].toLowerCase().includes("cloudinit")) {
+            //                     diskInfo.backend = volume_keys[l];
+            //                     diskInfo.dataVolume.name = "N/A";
+            //                     diskInfo.dataVolume.namespace = "N/A";
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
+
+            this.addDisk(disks[i].name, disks[i].bootOrder, diskInfo.bus);
 
             try {
                 /* Fetching Data Volume Template */
