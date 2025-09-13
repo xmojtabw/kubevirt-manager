@@ -830,15 +830,15 @@ export class VmlistComponent implements OnInit {
                         let diskData = await lastValueFrom(this.dataVolumesService.createDataVolume(diskDataVolume));
                         if(actualDisk.diskCacheMode != "") {
                             if(actualDisk.diskBus != "") {
-                                diskObject = { 'name': "disk" + i.toString(), 'cache': actualDisk.diskCacheMode, 'bootOrder': actualDisk.diskBootOrder, 'disk': {'bus': actualDisk.diskBus}};
+                                diskObject = { 'name': "disk" + i.toString(), 'cache': actualDisk.diskCacheMode, 'bootOrder': actualDisk.diskBootOrder, [actualDisk.diskKind]: {'bus': actualDisk.diskBus}};
                             } else {
-                                diskObject = { 'name': "disk" + i.toString(), 'cache': actualDisk.diskCacheMode, 'bootOrder': actualDisk.diskBootOrder, 'disk': {}};
+                                diskObject = { 'name': "disk" + i.toString(), 'cache': actualDisk.diskCacheMode, 'bootOrder': actualDisk.diskBootOrder, [actualDisk.diskKind]: {}};
                             }
                         } else {
                             if(actualDisk.diskBus != "") {
-                                diskObject = { 'name': "disk" + i.toString(), 'bootOrder': actualDisk.diskBootOrder, 'disk': {'bus': actualDisk.diskBus}};
+                                diskObject = { 'name': "disk" + i.toString(), 'bootOrder': actualDisk.diskBootOrder, [actualDisk.diskKind]: {'bus': actualDisk.diskBus}};
                             } else {
-                                diskObject = { 'name': "disk" + i.toString(), 'bootOrder': actualDisk.diskBootOrder, 'disk': {}};
+                                diskObject = { 'name': "disk" + i.toString(), 'bootOrder': actualDisk.diskBootOrder, [actualDisk.diskKind]: {}};
                             }
                         }
                         deviceObject = { 'name': "disk" + i.toString(), 'dataVolume': { 'name': actualDiskName}};
