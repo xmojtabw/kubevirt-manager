@@ -711,7 +711,7 @@ export class VmdetailsComponent implements OnInit {
             this.activeVm.cores = data.spec.template.spec.domain.cpu["cores"];
             this.activeVm.sockets = data.spec.template.spec.domain.cpu["sockets"];
             this.activeVm.threads = data.spec.template.spec.domain.cpu["threads"];
-            this.activeVm.memory = data.spec.template.spec.domain.resources.requests["memory"];
+            this.activeVm.memory = data.spec.template.spec.domain.memory["guest"];
         } else {
             /* load vCPU / Mem from type */
             try {

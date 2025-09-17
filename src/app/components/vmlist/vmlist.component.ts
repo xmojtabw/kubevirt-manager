@@ -399,7 +399,7 @@ export class VmlistComponent implements OnInit {
                     currentVm.cores = vms[i].spec.template.spec.domain.cpu["cores"];
                     currentVm.sockets = vms[i].spec.template.spec.domain.cpu["sockets"];
                     currentVm.threads = vms[i].spec.template.spec.domain.cpu["threads"];
-                    currentVm.memory = vms[i].spec.template.spec.domain.resources.requests["memory"];
+                    currentVm.memory = vms[i].spec.template.spec.domain.memory["guest"];
                 } catch (e: any){
                     currentVm.cores = currentVm.cores || 0;
                     currentVm.sockets = currentVm.sockets || 0;

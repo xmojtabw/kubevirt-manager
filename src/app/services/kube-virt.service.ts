@@ -150,9 +150,9 @@ export class KubeVirtService {
                     spec: {
                         domain: {
                             cpu: {
-                                sockets: sockets,
-                                cores: cores,
-                                threads: threads
+                                sockets: Number(sockets),
+                                cores: Number(cores),
+                                threads: Number(threads)
                             },
                             memory: { guest: `${memory}Gi` }
                         }
